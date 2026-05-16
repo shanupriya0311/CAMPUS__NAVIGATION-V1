@@ -146,30 +146,33 @@
 /* ================= EXIT BUTTON ================= */
 .exit-button {
     position: fixed;
-    top: 20px;
+    top: 25px;
     right: 20px;
-    z-index: 1000;
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    color: #1C1C1E;
-    font-size: 20px;
+    z-index: 2000;
+    height: 40px;
+    padding: 0 16px;
+    background: #FF3B30; /* Solid Red */
+    border: none;
+    border-radius: 20px;
+    color: #ffffff; /* White text */
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+    transition: none; /* Remove transitions/hover effects */
+}
+
+.exit-button svg {
+    display: block;
+    font-size: 20px;
+    stroke-width: 2; /* Make the X icon a bit bolder */
 }
 
 .exit-button:hover {
-    background: rgba(255, 255, 255, 1);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    /* Hover effects removed */
 }
 
 .exit-button:active {
@@ -238,25 +241,30 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 36px;
     height: 36px;
-    background: rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(10px);
+    padding: 0 14px;
+    background: #FF3B30; /* Solid Red */
     border: none;
-    border-radius: 50%;
-    color: #000;
-    font-size: 18px;
+    border-radius: 18px;
+    color: #ffffff !important; /* White text */
+    font-size: 13px;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 10;
+    z-index: 100;
+    transition: none; /* Remove transitions/hover effects */
+}
+
+.close-sheet-btn svg {
+    display: block;
+    font-size: 18px;
+    stroke-width: 1.5;
 }
 
 .close-sheet-btn:hover {
-    background: rgba(0, 0, 0, 0.15);
-    transform: scale(1.1) rotate(90deg);
+    /* Hover effects removed */
 }
 
 .sheet-content {
@@ -580,8 +588,13 @@
     }
 
     .exit-button {
-        width: 40px;
-        height: 40px;
+        top: 30px; /* More space for status bar/notch on mobile */
+        right: 15px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .exit-button svg {
         font-size: 18px;
     }
 }

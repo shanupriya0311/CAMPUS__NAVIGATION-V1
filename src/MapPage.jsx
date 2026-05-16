@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "./MapPage.css";
 import { nodes, locationData } from "./data";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaHome, FaThLarge, FaCompass, FaBuilding } from "react-icons/fa";
+import { FaHome, FaThLarge, FaCompass, FaBuilding, FaSearch } from "react-icons/fa";
 import { formatRoomLocation } from "./utils/roomUtils";
 import FeedbackReminder from "./components/FeedbackReminder";
 import { useSearchPlaceholder } from "./hooks/useSearchPlaceholder";
@@ -499,6 +499,7 @@ export default function MapPage() {
       )}
 
       <div className="search-bar">
+        <FaSearch className="search-icon" />
         <input
           placeholder={searchPlaceholder}
           value={search}

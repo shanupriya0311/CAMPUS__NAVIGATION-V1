@@ -134,14 +134,14 @@ const ExplorePage = () => {
         initialized.current = true;
 
         const bounds = L.latLngBounds(
-            [10.8725, 77.0160],
-            [10.8845, 77.0265]
+            [10.876600, 77.01870],   // SW corner (bottom-left with slight padding)
+            [10.880510, 77.02320]    // NE corner (top-right with slight padding)
         );
 
         const map = L.map('explore-map', {
             maxBounds: bounds,
             maxBoundsViscosity: 1.0,
-            minZoom: 17,
+            minZoom: 16,
             maxZoom: 19,
             zoomControl: true,
             scrollWheelZoom: true,
@@ -162,7 +162,7 @@ const ExplorePage = () => {
         mapRef.current = map;
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            minZoom: 17,
+            minZoom: 16,
             maxZoom: 19,
             keepBuffer: 4,
             updateWhenIdle: true,
@@ -304,10 +304,12 @@ const ExplorePage = () => {
 
             <div id="explore-map"></div>
 
-            {/* Exit Button */}
-            <button className="exit-button" onClick={handleExit}>
-                <FaTimes />
-            </button>
+            {/* Exit Button - Hidden when sidebar is open */}
+            {!selectedBuilding && (
+                <button className="exit-button" onClick={handleExit}>
+                    Exit
+                </button>
+            )}
 
             {/* Selected Building Card - Apple Maps Style */}
             {selectedBuilding && (
@@ -323,7 +325,7 @@ const ExplorePage = () => {
                             document.querySelector('.custom-map-icon.selected')?.classList.remove('selected');
                             setSelectedBuilding(null);
                         }}>
-                            <FaTimes />
+                            X
                         </button>
 
                         <div className="sheet-content">
