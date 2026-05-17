@@ -51,7 +51,7 @@ const MapView = () => {
     // If no destination provided, redirect to home
     if (!goalDestination) {
       alert("No destination selected. Redirecting to home...");
-      navigate("/");
+      navigate("/home");
       return;
     }
 
@@ -59,7 +59,7 @@ const MapView = () => {
     const destLocation = locationData[goalDestination];
     if (!destLocation) {
       alert("Invalid destination. Redirecting to home...");
-      navigate("/");
+      navigate("/home");
       return;
     }
 
@@ -72,7 +72,7 @@ const MapView = () => {
     const goal = nodes[actualDestId];
     if (!goal) {
       alert("Invalid destination. Redirecting to home...");
-      navigate("/");
+      navigate("/home");
       return;
     }
 
@@ -166,7 +166,7 @@ const MapView = () => {
     }, (error) => {
       console.error("Geolocation error:", error);
       alert("Unable to get your location. Please enable location services.");
-      navigate("/");
+      navigate("/home");
     });
 
     return () => map.remove();
@@ -174,7 +174,7 @@ const MapView = () => {
   }, [location.state, navigate]);
 
   const handleExit = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (

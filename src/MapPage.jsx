@@ -20,6 +20,33 @@ L.Icon.Default.mergeOptions({
     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
+/* ---------- GET IMAGE FOR LOCATION ---------- */
+const getLocationImage = (loc) => {
+  const id = loc.id;
+  const cat = loc.category || "";
+  
+  if (id === 'Library') return '/Map_Icons/Library.png';
+  if (id === 'FoodCourt' || cat === 'food') {
+    if (id === 'SnacksBox') return '/Map_Icons/SnacksBox.png';
+    return '/Map_Icons/FoodCourt.png';
+  }
+  if (id === 'Auditorium') return '/Map_Icons/Auditorium.png';
+  if (id === 'OpenAuditorium') return '/Map_Icons/Open_Auditorium.png';
+  if (id === 'TurfGround') return '/Map_Icons/FootBallCourt.png';
+  if (id === 'Kabbadi Ground') return '/Map_Icons/KabbadiCourt.png';
+  if (id === 'TennisCourt') return '/Map_Icons/TennisCourt.png';
+  if (cat === 'hostel' || id.toLowerCase().includes('hostel')) return '/Map_Icons/Hostel.png';
+  if (id === 'Entrance' || id === 'Exit') return '/Map_Icons/Gate.png';
+  if (cat === 'lab' || id.toLowerCase().includes('lab')) return '/Map_Icons/Computer_Lab.png';
+  if (id === 'NewPlacementCell' || id === 'COE') return '/Map_Icons/Placement_Cell.png';
+  if (id === 'Store' || id === 'Ragavendra') return '/Map_Icons/Store.png';
+  
+  // Default for blocks and others
+  if (cat === 'block' || id.toLowerCase().includes('block')) return '/Map_Icons/Blocks.png';
+  
+  return '/Map_Icons/Blocks.png'; // default fallback
+};
+
 export default function MapPage() {
   const searchPlaceholder = useSearchPlaceholder();
   const mapRef = useRef(null);
@@ -41,6 +68,82 @@ export default function MapPage() {
   const location = useLocation();
 
   const normalize = (s) => s.toLowerCase().replace(/\s+/g, "");
+
+  /* ---------- MAP RESIZING SYSTEM ---------- */
+  const [mapHeight, setMapHeight] = useState(window.innerWidth < 768 ? 320 : 450);
+  const isDraggingRef = useRef(false);
+  const startYRef = useRef(0);
+  const startHeightRef = useRef(0);
+
+  // Mouse drag handlers
+  const handleMouseDown = (e) => {
+    isDraggingRef.current = true;
+    startYRef.current = e.clientY;
+    startHeightRef.current = mapHeight;
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.body.classList.add("is-resizing");
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDraggingRef.current) return;
+    const deltaY = e.clientY - startYRef.current;
+    // Sensible boundary limits: min 180px, max 800px
+    const newHeight = Math.max(180, Math.min(800, startHeightRef.current + deltaY));
+    setMapHeight(newHeight);
+    
+    if (mapRef.current) {
+      mapRef.current.invalidateSize({ animate: false });
+    }
+  };
+
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+    document.body.classList.remove("is-resizing");
+  };
+
+  // Touch drag handlers for mobile responsiveness
+  const handleTouchStart = (e) => {
+    isDraggingRef.current = true;
+    startYRef.current = e.touches[0].clientY;
+    startHeightRef.current = mapHeight;
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", handleTouchEnd);
+    document.body.classList.add("is-resizing");
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDraggingRef.current) return;
+    // Prevent scrolling parent while dragging resizer
+    e.preventDefault();
+    const deltaY = e.touches[0].clientY - startYRef.current;
+    const newHeight = Math.max(160, Math.min(600, startHeightRef.current + deltaY));
+    setMapHeight(newHeight);
+    
+    if (mapRef.current) {
+      mapRef.current.invalidateSize({ animate: false });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    isDraggingRef.current = false;
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+    document.body.classList.remove("is-resizing");
+  };
+
+  // Cleanup resize listeners on unmount
+  useEffect(() => {
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+      document.body.classList.remove("is-resizing");
+    };
+  }, [mapHeight]);
 
   /* ---------- MAP INIT (FIXED) ---------- */
   useEffect(() => {
@@ -526,11 +629,27 @@ export default function MapPage() {
         ))}
       </div>
 
-      <div className="map-scroll-wrapper">
+      <div 
+        className="map-scroll-wrapper" 
+        style={{ height: `${mapHeight}px`, flex: 'none' }}
+      >
         <div id="map"></div>
         <button className="start-btn" onClick={handleStart}>
           START ➤
         </button>
+      </div>
+
+      {/* Elegant Draggable Resizer Divider */}
+      <div 
+        className="map-resize-divider"
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        title="Drag up or down to resize the map"
+      >
+        <div className="divider-line"></div>
+        <div className="divider-handle">
+          <span className="drag-dots">•••</span>
+        </div>
       </div>
 
       <div className="buildings-section">
@@ -542,10 +661,20 @@ export default function MapPage() {
               className={`building-card ${goal === loc.id ? "active" : ""} ${loc.type === 'indoor' ? 'indoor-card' : ''}`}
               onClick={() => setGoal(loc.id)}
             >
-              <div className="building-card-name">{loc.name}</div>
-              {loc.type === 'indoor' && (
-                <div className="building-card-context">{formatRoomLocation(loc, locationData)}</div>
-              )}
+              <div className="building-card-image-wrapper">
+                <img 
+                  src={getLocationImage(loc)} 
+                  alt={loc.name} 
+                  className="building-card-image"
+                  loading="lazy"
+                />
+              </div>
+              <div className="building-card-info">
+                <div className="building-card-name">{loc.name}</div>
+                {loc.type === 'indoor' && (
+                  <div className="building-card-context">{formatRoomLocation(loc, locationData)}</div>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -553,9 +682,9 @@ export default function MapPage() {
 
       <nav className="bottom-nav">
         <div
-          className={`nav-item ${location.pathname === "/" ? "active" : ""
+          className={`nav-item ${location.pathname === "/home" ? "active" : ""
             }`}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
         >
           <FaHome />
           <span>Home</span>

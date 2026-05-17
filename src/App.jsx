@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import WelcomePage from "./WelcomePage";
 import BuildingsPage from "./BuildingsPage";
 import MapPage from "./MapPage";
 import CategoriesPage from "./CategoriesPage";
@@ -19,7 +20,8 @@ function App() {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {/* Public routes */}
-        <Route path="/" element={<PageTransition><MapPage /></PageTransition>} />
+        <Route path="/" element={<PageTransition><WelcomePage /></PageTransition>} />
+        <Route path="/home" element={<PageTransition><MapPage /></PageTransition>} />
         <Route path="/buildings" element={<PageTransition><BuildingsPage /></PageTransition>} />
         <Route path="/categories" element={<PageTransition><CategoriesPage /></PageTransition>} />
         <Route path="/map" element={<PageTransition><CampusMap /></PageTransition>} />
