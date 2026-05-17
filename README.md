@@ -9,8 +9,21 @@
 <h1 align="center">📍 Campus Navigator</h1>
 
 <p align="center">
+<<<<<<< HEAD
 A Smart, Real-Time Campus Mapping & Navigation System for <b>Karpagam College of Engineering</b>  
 <br>Designed to help students, visitors, and staff navigate effortlessly.
+=======
+🚀 <b>KCE Smart Campus Navigator</b> <br><br>
+
+An intelligent, real-time campus mapping and navigation system designed for 
+<b>Karpagam College of Engineering</b>. This platform helps students, visitors, and staff 
+easily explore the campus by providing interactive maps, precise building locations, 
+and optimized navigation paths between blocks.<br><br>
+
+Built to enhance accessibility and reduce confusion inside the campus, 
+the system integrates geolocation, route visualization, and user-friendly design 
+to deliver a seamless navigation experience.
+>>>>>>> main
 </p>
 
 ---
