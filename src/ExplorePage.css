@@ -151,10 +151,12 @@
     z-index: 2000;
     height: 40px;
     padding: 0 16px;
-    background: #FF3B30; /* Solid Red */
+    background: #FF3B30;
+    /* Solid Red */
     border: none;
     border-radius: 20px;
-    color: #ffffff; /* White text */
+    color: #ffffff;
+    /* White text */
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
@@ -162,13 +164,15 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
-    transition: none; /* Remove transitions/hover effects */
+    transition: none;
+    /* Remove transitions/hover effects */
 }
 
 .exit-button svg {
     display: block;
     font-size: 20px;
-    stroke-width: 2; /* Make the X icon a bit bolder */
+    stroke-width: 2;
+    /* Make the X icon a bit bolder */
 }
 
 .exit-button:hover {
@@ -241,20 +245,22 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    width: 36px;
     height: 36px;
-    padding: 0 14px;
-    background: #FF3B30; /* Solid Red */
+    background: rgba(0, 0, 0, 0.12);
+    /* Slightly darker for better visibility */
+    backdrop-filter: blur(10px);
     border: none;
-    border-radius: 18px;
-    color: #ffffff !important; /* White text */
-    font-size: 13px;
-    font-weight: 700;
+    border-radius: 50%;
+    color: #000000 !important;
+    /* Force black icon */
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 100;
-    transition: none; /* Remove transitions/hover effects */
+    /* Higher z-index to stay above sheet content */
 }
 
 .close-sheet-btn svg {
@@ -588,7 +594,8 @@
     }
 
     .exit-button {
-        top: 30px; /* More space for status bar/notch on mobile */
+        top: 30px;
+        /* More space for status bar/notch on mobile */
         right: 15px;
         width: 42px;
         height: 42px;
