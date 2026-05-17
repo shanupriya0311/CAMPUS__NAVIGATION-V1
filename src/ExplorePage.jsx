@@ -284,7 +284,7 @@ const ExplorePage = () => {
 
     /* ---------- HANDLE EXIT ---------- */
     const handleExit = () => {
-        navigate('/');
+        navigate('/home');
     };
 
     const handleDirections = (buildingId) => {
@@ -402,7 +402,7 @@ const ExplorePage = () => {
 
             {/* Bottom Navigation */}
             <nav className="bottom-nav">
-                <div className="nav-item" onClick={() => navigate('/')}>
+                <div className="nav-item" onClick={() => navigate('/home')}>
                     <FaHome />
                     <span>Home</span>
                 </div>

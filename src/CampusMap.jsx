@@ -310,7 +310,7 @@ const CampusMap = () => {
   }, [goal]);
 
   const handleExit = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (
@@ -340,7 +340,7 @@ const CampusMap = () => {
       <div id="map"></div>
 
       <nav className="bottom-nav">
-        <div className="nav-item" onClick={() => navigate("/")}>
+        <div className="nav-item" onClick={() => navigate("/home")}>
           <FaHome /><span>Home</span>
         </div>
         <div className="nav-item" onClick={() => navigate("/buildings")}>
